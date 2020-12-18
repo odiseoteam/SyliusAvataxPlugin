@@ -1,0 +1,11 @@
+sylius_resource:
+    resources:
+        odiseo_sylius_avatax_plugin.avatax_configuration:
+            driver: doctrine/orm
+            classes:
+                model: Odiseo\SyliusAvataxPlugin\Entity\AvataxConfiguration
+                interface: Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationInterface
+                form: Odiseo\SyliusAvataxPlugin\Form\Type\AvataxConfigurationType
+                repository: Odiseo\SyliusAvataxPlugin\Repository\AvataxConfigurationRepository
+                controller: Sylius\Bundle\ResourceBundle\Controller\ResourceController
+                factory: Sylius\Component\Resource\Factory\Factory

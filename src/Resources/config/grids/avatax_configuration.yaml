@@ -1,0 +1,61 @@
+sylius_grid:
+    grids:
+        odiseo_sylius_avatax_plugin_avatax_configuration:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: "%odiseo_sylius_avatax_plugin.model.avatax_configuration.class%"
+            sorting:
+                createdAt: desc
+            fields:
+                appName:
+                    type: string
+                    label: odiseo_sylius_avatax_plugin.ui.app_name
+                    sortable: ~
+                appVersion:
+                    type: string
+                    label: odiseo_sylius_avatax_plugin.ui.app_version
+                    sortable: ~
+                sandbox:
+                    type: twig
+                    label: odiseo_sylius_avatax_plugin.ui.sandbox
+                    sortable: ~
+                    options:
+                        template: "@SyliusUi/Grid/Field/yesNo.html.twig"
+                enabled:
+                    type: twig
+                    label: sylius.ui.enabled
+                    sortable: ~
+                    options:
+                        template: "@SyliusUi/Grid/Field/enabled.html.twig"
+                createdAt:
+                    type: datetime
+                    label: sylius.ui.creation_date
+                    sortable: ~
+                    options:
+                        format: d-m-Y H:i
+            filters:
+                appName:
+                    type: string
+                    label: odiseo_sylius_avatax_plugin.ui.app_name
+                appVersion:
+                    type: string
+                    label: odiseo_sylius_avatax_plugin.ui.app_version
+                sandbox:
+                    type: boolean
+                    label: odiseo_sylius_avatax_plugin.ui.sandbox
+                enabled:
+                    type: boolean
+                    label: sylius.ui.enabled
+                createdAt:
+                    type: date
+                    label: sylius.ui.creation_date
+            actions:
+                main:
+                    create:
+                        type: create
+                item:
+                    update:
+                        type: update
+                    delete:
+                        type: delete

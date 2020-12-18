@@ -1,0 +1,3 @@
+odiseo_sylius_avatax_plugin_api_admin:
+    resource: api/admin.yaml
+    prefix: /admin/v{version}

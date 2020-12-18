@@ -1,0 +1,2 @@
+odiseo_sylius_avatax_plugin_api_admin_avatax_configuration:
+    resource: admin/avatax_configuration.yaml

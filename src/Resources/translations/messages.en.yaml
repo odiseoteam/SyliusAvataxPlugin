@@ -1,0 +1,20 @@
+odiseo_sylius_avatax_plugin:
+    ui:
+        avatax_configurations: Avatax configurations
+        edit_avatax_configuration: Edit Avatax configuration
+        new_avatax_configuration: New Avatax configuration
+        manage_configurations: Manage configurations
+        app_name: APP name
+        app_version: APP version
+        sandbox: Sandbox
+    menu:
+        admin:
+            avatax: Avatax
+    form:
+        avatax_configuration:
+            app_name: APP name
+            app_version: APP version
+            machine_name: Machine name
+            sandbox: Sandbox
+            account_id: Account ID
+            license_key: License key

@@ -1,0 +1,7 @@
+odiseo_sylius_avatax_plugin_admin:
+    resource: "@OdiseoSyliusAvataxPlugin/Resources/config/routing/admin.yaml"
+    prefix: /admin
+
+odiseo_sylius_avatax_plugin_api:
+    resource: "@OdiseoSyliusAvataxPlugin/Resources/config/routing/api.yaml"
+    prefix: /api

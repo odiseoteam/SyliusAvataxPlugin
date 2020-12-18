@@ -1,0 +1,47 @@
+Odiseo\SyliusAvataxPlugin\Entity\AvataxConfiguration:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [appName]
+            message: 'odiseo_sylius_avatax_plugin.avatax_configuration.app_name.unique'
+            groups: ['odiseo']
+    properties:
+        appName:
+            - NotBlank:
+                message: 'odiseo_sylius_avatax_plugin.avatax_configuration.app_name.not_blank'
+                groups: ['odiseo']
+            - Length:
+                min: 2
+                max: 50
+                minMessage: 'odiseo_sylius_avatax_plugin.avatax_configuration.app_name.min_length'
+                maxMessage: 'odiseo_sylius_avatax_plugin.avatax_configuration.app_name.max_length'
+                groups: ['odiseo']
+        appVersion:
+            - NotBlank:
+                message: 'odiseo_sylius_avatax_plugin.avatax_configuration.app_version.not_blank'
+                groups: ['odiseo']
+            - Length:
+                min: 3
+                max: 10
+                minMessage: 'odiseo_sylius_avatax_plugin.avatax_configuration.app_version.min_length'
+                maxMessage: 'odiseo_sylius_avatax_plugin.avatax_configuration.app_version.max_length'
+                groups: ['odiseo']
+        accountId:
+            - NotBlank:
+                message: 'odiseo_sylius_avatax_plugin.avatax_configuration.account_id.not_blank'
+                groups: ['odiseo']
+            - Length:
+                min: 2
+                max: 250
+                minMessage: 'odiseo_sylius_avatax_plugin.avatax_configuration.account_id.min_length'
+                maxMessage: 'odiseo_sylius_avatax_plugin.avatax_configuration.account_id.max_length'
+                groups: ['odiseo']
+        licenseKey:
+            - NotBlank:
+                message: 'odiseo_sylius_avatax_plugin.avatax_configuration.license_key.not_blank'
+                groups: ['odiseo']
+            - Length:
+                min: 2
+                max: 250
+                minMessage: 'odiseo_sylius_avatax_plugin.avatax_configuration.license_key.min_length'
+                maxMessage: 'odiseo_sylius_avatax_plugin.avatax_configuration.license_key.max_length'
+                groups: ['odiseo']

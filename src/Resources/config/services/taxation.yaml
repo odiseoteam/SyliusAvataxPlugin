@@ -1,0 +1,22 @@
+services:
+    odiseo_sylius_avatax_plugin.taxation.order_avatax_taxes_applicator:
+        class: Odiseo\SyliusAvataxPlugin\Taxation\Applicator\OrderAvataxTaxesApplicator
+        arguments:
+            - '@odiseo_sylius_avatax_plugin.api.avatax_client'
+            - '@sylius.factory.adjustment'
+
+    sylius.taxation.order_items_based_strategy:
+        class: Sylius\Bundle\CoreBundle\Taxation\Strategy\TaxCalculationStrategy
+        arguments:
+            - 'order_items_based'
+            - ['@sylius.taxation.order_items_taxes_applicator', '@sylius.taxation.order_shipment_taxes_applicator', '@odiseo_sylius_avatax_plugin.taxation.order_avatax_taxes_applicator']
+        tags:
+            - { name: sylius.taxation.calculation_strategy, type: order_items_based, label: 'Order items based' }
+
+    sylius.taxation.order_item_units_based_strategy:
+        class: Sylius\Bundle\CoreBundle\Taxation\Strategy\TaxCalculationStrategy
+        arguments:
+            - 'order_item_units_based'
+            - ['@sylius.taxation.order_items_taxes_applicator', '@sylius.taxation.order_shipment_taxes_applicator', '@odiseo_sylius_avatax_plugin.taxation.order_avatax_taxes_applicator']
+        tags:
+            - { name: sylius.taxation.calculation_strategy, type: order_item_units_based, label: 'Order item units based' }

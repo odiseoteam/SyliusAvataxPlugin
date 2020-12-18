@@ -1,0 +1,25 @@
+{{ form_errors(form) }}
+
+<div class="ui two column stackable grid">
+    <div class="column">
+        <div class="ui segment">
+            {{ form_row(form.appName) }}
+            {{ form_row(form.appVersion) }}
+            {{ form_row(form.enabled) }}
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui segment">
+            {{ form_row(form.accountId) }}
+            {{ form_row(form.licenseKey) }}
+            {{ form_row(form.sandbox) }}
+        </div>
+    </div>
+</div>
+<div class="ui one column stackable grid">
+    <div class="column">
+        <div class="ui segment">
+            {{ form_row(form.machineName) }}
+        </div>
+    </div>
+</div>

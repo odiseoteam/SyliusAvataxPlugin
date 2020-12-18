@@ -1,0 +1,19 @@
+odiseo_sylius_avatax_plugin:
+    avatax_configuration:
+        app_name:
+            unique: There is an existing configuration with this APP name.
+            not_blank: APP name cannot be blank.
+            min_length: APP name must be at least {{ limit }} characters long.
+            max_length: APP name can not be longer than {{ limit }} characters.
+        app_version:
+            not_blank: APP version cannot be blank.
+            min_length: APP version must be at least {{ limit }} characters long.
+            max_length: APP version can not be longer than {{ limit }} characters.
+        account_id:
+            not_blank: Account ID cannot be blank.
+            min_length: Account ID must be at least {{ limit }} characters long.
+            max_length: Account ID can not be longer than {{ limit }} characters.
+        license_key:
+            not_blank: License key cannot be blank.
+            min_length: License key must be at least {{ limit }} characters long.
+            max_length: License key can not be longer than {{ limit }} characters.

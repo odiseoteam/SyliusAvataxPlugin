@@ -1,0 +1,19 @@
+odiseo_sylius_avatax_plugin:
+    avatax_configuration:
+        app_name:
+            unique: Ya existe una configuración con este nombre de APP.
+            not_blank: El nombre de APP no puede ir vacío.
+            min_length: El nombre de APP debe tener al menos {{ limit }} caracteres.
+            max_length: El nombre de APP no puede tener más de {{ limit }} caracteres.
+        app_version:
+            not_blank: La versión de APP no puede ir vacía.
+            min_length: La versión de APP debe tener al menos {{ limit }} caracteres.
+            max_length: La versión de APP no puede tener más de {{ limit }} caracteres.
+        account_id:
+            not_blank: El ID de cuenta no puede ir vacío.
+            min_length: El ID de cuenta debe tener al menos {{ limit }} caracteres.
+            max_length: El ID de cuenta no puede tener más de {{ limit }} caracteres.
+        license_key:
+            not_blank: La llave de licencia no puede ir vacía.
+            min_length: La llave de licencia debe tener al menos {{ limit }} caracteres.
+            max_length: La llave de licencia no puede tener más de {{ limit }} caracteres.

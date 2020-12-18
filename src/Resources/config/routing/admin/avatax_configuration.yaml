@@ -1,0 +1,17 @@
+odiseo_sylius_avatax_plugin_admin_avatax_configuration:
+    resource: |
+        alias: odiseo_sylius_avatax_plugin.avatax_configuration
+        section: admin
+        templates: SyliusAdminBundle:Crud
+        except: ['show']
+        redirect: index
+        grid: odiseo_sylius_avatax_plugin_avatax_configuration
+        permission: true
+        vars:
+            all:
+                subheader: odiseo_sylius_avatax_plugin.ui.manage_configurations
+                templates:
+                    form: '@OdiseoSyliusAvataxPlugin/Admin/AvataxConfiguration/_form.html.twig'
+            index:
+                icon: cog
+    type: sylius.resource

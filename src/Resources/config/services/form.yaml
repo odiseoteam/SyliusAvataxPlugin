@@ -1,0 +1,8 @@
+services:
+    odiseo_sylius_avatax_plugin.form.type.avatax_configuration:
+        class: Odiseo\SyliusAvataxPlugin\Form\Type\AvataxConfigurationType
+        arguments:
+            - '%odiseo_sylius_avatax_plugin.model.avatax_configuration.class%'
+            - ['odiseo']
+        tags:
+            - { name: form.type, alias: odiseo_sylius_avatax_configuration }
