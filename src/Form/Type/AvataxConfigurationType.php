@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Odiseo\SyliusAvataxPlugin\Form\Type;
 
+use Sylius\Bundle\AddressingBundle\Form\Type\ZoneChoiceType;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Sylius\Component\Core\Model\Scope;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,6 +43,9 @@ final class AvataxConfigurationType extends AbstractResourceType
             ->add('enabled', CheckboxType::class, [
                 'label' => 'sylius.ui.enabled',
             ])
+            ->add('zone', ZoneChoiceType::class, [
+                'zone_scope' => Scope::TAX
+            ]);
         ;
     }
 

@@ -17,3 +17,5 @@ odiseo_sylius_avatax_plugin:
             not_blank: License key cannot be blank.
             min_length: License key must be at least {{ limit }} characters long.
             max_length: License key can not be longer than {{ limit }} characters.
+        zone:
+            not_blank: Please select tax zone.

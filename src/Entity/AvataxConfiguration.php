@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Odiseo\SyliusAvataxPlugin\Entity;
 
+use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Resource\Model\TimestampableTrait;
 use Sylius\Component\Resource\Model\ToggleableTrait;
 
@@ -32,6 +33,9 @@ class AvataxConfiguration implements AvataxConfigurationInterface
 
     /** @var string|null */
     protected $licenseKey;
+
+    /** @var ZoneInterface|null */
+    protected $zone;
 
     public function __construct()
     {
@@ -140,5 +144,21 @@ class AvataxConfiguration implements AvataxConfigurationInterface
     public function setLicenseKey(?string $licenseKey): void
     {
         $this->licenseKey = $licenseKey;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getZone(): ?ZoneInterface
+    {
+        return $this->zone;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setZone(?ZoneInterface $zone): void
+    {
+        $this->zone = $zone;
     }
 }

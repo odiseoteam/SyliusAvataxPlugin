@@ -14,6 +14,9 @@ class AvataxClient extends BaseAvataxClient
     /** @var AvataxConfigurationRepositoryInterface */
     private $avataxConfigurationRepository;
 
+    /** @var AvataxConfigurationInterface */
+    private $avataxConfiguration;
+
     public function __construct(AvataxConfigurationRepositoryInterface $avataxConfigurationRepository)
     {
         $this->avataxConfigurationRepository = $avataxConfigurationRepository;
@@ -22,6 +25,8 @@ class AvataxClient extends BaseAvataxClient
         if (!$avataxConfiguration instanceof AvataxConfigurationInterface) {
             throw new NotFoundHttpException(sprintf('The "%s" has not been found', get_class($avataxConfiguration)));
         }
+
+        $this->avataxConfiguration = $avataxConfiguration;
 
         $appName = $avataxConfiguration->getAppName();
         $appVersion = $avataxConfiguration->getAppVersion();
@@ -34,5 +39,13 @@ class AvataxClient extends BaseAvataxClient
         $licenseKey = $avataxConfiguration->getLicenseKey();
 
         $this->withLicenseKey($accountId, $licenseKey);
+    }
+
+    /**
+     * @return AvataxConfigurationInterface
+     */
+    public function getConfiguration(): AvataxConfigurationInterface
+    {
+        return $this->avataxConfiguration;
     }
 }

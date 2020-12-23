@@ -24,5 +24,9 @@
         <field name="updatedAt" type="datetime" column="updated_at">
             <gedmo:timestampable on="update"/>
         </field>
+
+        <many-to-one field="zone" target-entity="Sylius\Component\Addressing\Model\ZoneInterface">
+            <join-column name="zone_id" referenced-column-name="id" nullable="false"/>
+        </many-to-one>
     </mapped-superclass>
 </doctrine-mapping>

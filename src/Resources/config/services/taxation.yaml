@@ -4,6 +4,8 @@ services:
         arguments:
             - '@odiseo_sylius_avatax_plugin.api.avatax_client'
             - '@sylius.factory.adjustment'
+            - '@sylius.provider.channel_based_default_zone_provider'
+            - '@sylius.zone_matcher'
 
     sylius.taxation.order_items_based_strategy:
         class: Sylius\Bundle\CoreBundle\Taxation\Strategy\TaxCalculationStrategy

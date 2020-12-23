@@ -8,6 +8,7 @@ use Avalara\DocumentType;
 use Avalara\TransactionAddressType;
 use Avalara\TransactionBuilder;
 use Odiseo\SyliusAvataxPlugin\Api\AvataxClient;
+use Sylius\Component\Addressing\Matcher\ZoneMatcherInterface;
 use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Core\Model\AdjustmentInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
@@ -15,7 +16,9 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\OrderItemUnitInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\Scope;
 use Sylius\Component\Core\Model\ShipmentInterface;
+use Sylius\Component\Core\Provider\ZoneProviderInterface;
 use Sylius\Component\Core\Taxation\Applicator\OrderTaxesApplicatorInterface;
 use Sylius\Component\Order\Factory\AdjustmentFactoryInterface;
 
@@ -27,12 +30,22 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
     /** @var AdjustmentFactoryInterface */
     private $adjustmentFactory;
 
+    /** @var ZoneProviderInterface */
+    private $defaultTaxZoneProvider;
+
+    /** @var ZoneMatcherInterface */
+    private $zoneMatcher;
+
     public function __construct(
         AvataxClient $avaTaxClient,
-        AdjustmentFactoryInterface $adjustmentFactory
+        AdjustmentFactoryInterface $adjustmentFactory,
+        ZoneProviderInterface $defaultTaxZoneProvider,
+        ZoneMatcherInterface $zoneMatcher
     ) {
         $this->avataxClient = $avaTaxClient;
         $this->adjustmentFactory = $adjustmentFactory;
+        $this->defaultTaxZoneProvider = $defaultTaxZoneProvider;
+        $this->zoneMatcher = $zoneMatcher;
     }
 
     /**
@@ -40,6 +53,10 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
      */
     public function apply(OrderInterface $order, ZoneInterface $zone): void
     {
+        if (!$this->matchTaxZone($order)) {
+            return;
+        }
+
         $taxes = $this->createAvataxTb($order)->create();
 
         foreach ($taxes->lines as $line) {
@@ -144,5 +161,32 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         );
 
         return $tb;
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @return bool
+     */
+    private function matchTaxZone(OrderInterface $order): bool
+    {
+        $billingAddress = $order->getBillingAddress();
+        $zones = [];
+
+        if (null !== $billingAddress) {
+            $zones = $this->zoneMatcher->matchAll($billingAddress, Scope::TAX);
+        } else {
+            $zones[] = $this->defaultTaxZoneProvider->getZone($order);
+        }
+
+        if (empty($zones)) {
+            return false;
+        }
+
+        $avataxConfiguration = $this->avataxClient->getConfiguration();
+        if (!in_array($avataxConfiguration->getZone(), $zones)) {
+            return false;
+        }
+
+        return true;
     }
 }

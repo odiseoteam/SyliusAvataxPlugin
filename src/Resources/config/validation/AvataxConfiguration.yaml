@@ -45,3 +45,7 @@ Odiseo\SyliusAvataxPlugin\Entity\AvataxConfiguration:
                 minMessage: 'odiseo_sylius_avatax_plugin.avatax_configuration.license_key.min_length'
                 maxMessage: 'odiseo_sylius_avatax_plugin.avatax_configuration.license_key.max_length'
                 groups: ['odiseo']
+        zone:
+            - NotBlank:
+                message: 'odiseo_sylius_avatax_plugin.avatax_configuration.zone.not_blank'
+                groups: ['odiseo']

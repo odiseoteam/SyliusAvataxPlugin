@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Odiseo\SyliusAvataxPlugin\Entity;
 
+use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 use Sylius\Component\Resource\Model\TimestampableInterface;
 use Sylius\Component\Resource\Model\ToggleableInterface;
@@ -72,4 +73,14 @@ interface AvataxConfigurationInterface extends
      * @param string|null $licenseKey
      */
     public function setLicenseKey(?string $licenseKey): void;
+
+    /**
+     * @return ZoneInterface|null
+     */
+    public function getZone(): ?ZoneInterface;
+
+    /**
+     * @param ZoneInterface|null $zone
+     */
+    public function setZone(?ZoneInterface $zone): void;
 }

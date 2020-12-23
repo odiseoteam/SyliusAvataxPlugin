@@ -6,7 +6,6 @@ odiseo_sylius_avatax_plugin:
         manage_configurations: Administrar configuraciones
         app_name: Nombre de APP
         app_version: Versión de APP
-        sandbox: Sandbox
     menu:
         admin:
             avatax: Avatax

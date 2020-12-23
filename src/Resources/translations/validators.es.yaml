@@ -17,3 +17,5 @@ odiseo_sylius_avatax_plugin:
             not_blank: La llave de licencia no puede ir vacía.
             min_length: La llave de licencia debe tener al menos {{ limit }} caracteres.
             max_length: La llave de licencia no puede tener más de {{ limit }} caracteres.
+        zone:
+            not_blank: Por favor, seleccione la zona de impuestos.

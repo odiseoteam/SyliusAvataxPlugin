@@ -16,12 +16,9 @@ sylius_grid:
                     type: string
                     label: odiseo_sylius_avatax_plugin.ui.app_version
                     sortable: ~
-                sandbox:
-                    type: twig
-                    label: odiseo_sylius_avatax_plugin.ui.sandbox
-                    sortable: ~
-                    options:
-                        template: "@SyliusUi/Grid/Field/yesNo.html.twig"
+                zone:
+                    type: string
+                    label: sylius.ui.zone
                 enabled:
                     type: twig
                     label: sylius.ui.enabled
@@ -41,9 +38,6 @@ sylius_grid:
                 appVersion:
                     type: string
                     label: odiseo_sylius_avatax_plugin.ui.app_version
-                sandbox:
-                    type: boolean
-                    label: odiseo_sylius_avatax_plugin.ui.sandbox
                 enabled:
                     type: boolean
                     label: sylius.ui.enabled
