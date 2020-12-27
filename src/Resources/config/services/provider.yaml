@@ -1,0 +1,5 @@
+services:
+    odiseo_sylius_avatax_plugin.provider.enabled_avatax_configuration:
+        class: Odiseo\SyliusAvataxPlugin\Provider\EnabledAvataxConfigurationProvider
+        arguments:
+            - '@odiseo_sylius_avatax_plugin.repository.avatax_configuration'

@@ -2,4 +2,6 @@ imports:
     - { resource: services/api.yaml }
     - { resource: services/event_listener.yaml }
     - { resource: services/form.yaml }
+    - { resource: services/provider.yaml }
+    - { resource: services/resolver.yaml }
     - { resource: services/taxation.yaml }

@@ -5,28 +5,18 @@ declare(strict_types=1);
 namespace Odiseo\SyliusAvataxPlugin\Api;
 
 use Avalara\AvaTaxClient as BaseAvataxClient;
-use Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationInterface;
-use Odiseo\SyliusAvataxPlugin\Repository\AvataxConfigurationRepositoryInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Odiseo\SyliusAvataxPlugin\Provider\EnabledAvataxConfigurationProviderInterface;
 
 class AvataxClient extends BaseAvataxClient
 {
-    /** @var AvataxConfigurationRepositoryInterface */
-    private $avataxConfigurationRepository;
+    /** @var EnabledAvataxConfigurationProviderInterface */
+    private $enabledAvataxConfigurationProvider;
 
-    /** @var AvataxConfigurationInterface */
-    private $avataxConfiguration;
-
-    public function __construct(AvataxConfigurationRepositoryInterface $avataxConfigurationRepository)
+    public function __construct(EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider)
     {
-        $this->avataxConfigurationRepository = $avataxConfigurationRepository;
+        $this->enabledAvataxConfigurationProvider = $enabledAvataxConfigurationProvider;
 
-        $avataxConfiguration = $this->avataxConfigurationRepository->findOneByEnabled();
-        if (!$avataxConfiguration instanceof AvataxConfigurationInterface) {
-            throw new NotFoundHttpException(sprintf('The "%s" has not been found', get_class($avataxConfiguration)));
-        }
-
-        $this->avataxConfiguration = $avataxConfiguration;
+        $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
 
         $appName = $avataxConfiguration->getAppName();
         $appVersion = $avataxConfiguration->getAppVersion();
@@ -39,13 +29,5 @@ class AvataxClient extends BaseAvataxClient
         $licenseKey = $avataxConfiguration->getLicenseKey();
 
         $this->withLicenseKey($accountId, $licenseKey);
-    }
-
-    /**
-     * @return AvataxConfigurationInterface
-     */
-    public function getConfiguration(): AvataxConfigurationInterface
-    {
-        return $this->avataxConfiguration;
     }
 }

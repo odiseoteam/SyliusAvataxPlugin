@@ -8,6 +8,9 @@ use Avalara\DocumentType;
 use Avalara\TransactionAddressType;
 use Avalara\TransactionBuilder;
 use Odiseo\SyliusAvataxPlugin\Api\AvataxClient;
+use Odiseo\SyliusAvataxPlugin\Provider\EnabledAvataxConfigurationProviderInterface;
+use Odiseo\SyliusAvataxPlugin\Resolver\OrderItemAvataxCodeResolverInterface;
+use Odiseo\SyliusAvataxPlugin\Resolver\ShippingAvataxCodeResolverInterface;
 use Sylius\Component\Addressing\Matcher\ZoneMatcherInterface;
 use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Core\Model\AdjustmentInterface;
@@ -15,9 +18,8 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\OrderItemUnitInterface;
-use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\Scope;
-use Sylius\Component\Core\Model\ShipmentInterface;
+use Sylius\Component\Core\Model\ShopBillingDataInterface;
 use Sylius\Component\Core\Provider\ZoneProviderInterface;
 use Sylius\Component\Core\Taxation\Applicator\OrderTaxesApplicatorInterface;
 use Sylius\Component\Order\Factory\AdjustmentFactoryInterface;
@@ -36,16 +38,31 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
     /** @var ZoneMatcherInterface */
     private $zoneMatcher;
 
+    /** @var EnabledAvataxConfigurationProviderInterface */
+    private $enabledAvataxConfigurationProvider;
+
+    /** @var OrderItemAvataxCodeResolverInterface */
+    private $orderItemAvataxCodeResolver;
+
+    /** @var ShippingAvataxCodeResolverInterface */
+    private $shippingAvataxCodeResolver;
+
     public function __construct(
         AvataxClient $avaTaxClient,
         AdjustmentFactoryInterface $adjustmentFactory,
         ZoneProviderInterface $defaultTaxZoneProvider,
-        ZoneMatcherInterface $zoneMatcher
+        ZoneMatcherInterface $zoneMatcher,
+        EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider,
+        OrderItemAvataxCodeResolverInterface $orderItemAvataxCodeResolver,
+        ShippingAvataxCodeResolverInterface $shippingAvataxCodeResolver
     ) {
         $this->avataxClient = $avaTaxClient;
         $this->adjustmentFactory = $adjustmentFactory;
         $this->defaultTaxZoneProvider = $defaultTaxZoneProvider;
         $this->zoneMatcher = $zoneMatcher;
+        $this->enabledAvataxConfigurationProvider = $enabledAvataxConfigurationProvider;
+        $this->orderItemAvataxCodeResolver = $orderItemAvataxCodeResolver;
+        $this->shippingAvataxCodeResolver = $shippingAvataxCodeResolver;
     }
 
     /**
@@ -108,20 +125,14 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
     {
         $tb = $this->createAvataxBaseTb($order);
 
-        $shipments = $order->getShipments();
-        /** @var ShipmentInterface $firstShipment */
-        $firstShipment = $shipments->first();
-
         foreach ($order->getItems() as $item) {
             $quantity = $item->getQuantity();
             $variant = $item->getVariant();
-            /** @var ProductInterface $product */
-            $product = $variant->getProduct();
 
-            $tb->withLine($item->getTotal()/100, $quantity, $variant->getCode(), $product->getTaxCode());
+            $tb->withLine($item->getTotal()/100, $quantity, $variant->getCode(), $this->orderItemAvataxCodeResolver->getTaxCode($item));
         }
 
-        $tb->withLine($order->getShippingTotal()/100, 1, 'shipping', $firstShipment->getTaxCode());
+        $tb->withLine($order->getShippingTotal()/100, 1, 'shipping', $this->shippingAvataxCodeResolver->getTaxCode($this->enabledAvataxConfigurationProvider->getConfiguration()));
 
         return $tb;
     }
@@ -182,11 +193,17 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
             return false;
         }
 
-        $avataxConfiguration = $this->avataxClient->getConfiguration();
+        $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
         if (!in_array($avataxConfiguration->getZone(), $zones)) {
             return false;
         }
 
         return true;
+    }
+
+    private function isValidAddress(ShopBillingDataInterface $address): bool
+    {
+        return null !== $address->getStreet() && null !== $address->getCity() && null !== $address->getTaxId() &&
+            null !== $address->getPostcode() && null !== $address->getCountryCode();
     }
 }

@@ -2,5 +2,5 @@ services:
     odiseo_sylius_avatax_plugin.api.avatax_client:
         class: Odiseo\SyliusAvataxPlugin\Api\AvataxClient
         arguments:
-            - '@odiseo_sylius_avatax_plugin.repository.avatax_configuration'
+            - '@odiseo_sylius_avatax_plugin.provider.enabled_avatax_configuration'
         lazy: true

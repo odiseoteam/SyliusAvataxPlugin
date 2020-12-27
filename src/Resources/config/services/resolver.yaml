@@ -1,0 +1,6 @@
+services:
+    odiseo_sylius_avatax_plugin.resolver.order_item_avatax_code:
+        class: Odiseo\SyliusAvataxPlugin\Resolver\OrderItemAvataxCodeResolver
+
+    odiseo_sylius_avatax_plugin.resolver.shipping_avatax_code:
+        class: Odiseo\SyliusAvataxPlugin\Resolver\ShippingAvataxCodeResolver

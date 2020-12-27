@@ -6,6 +6,9 @@ services:
             - '@sylius.factory.adjustment'
             - '@sylius.provider.channel_based_default_zone_provider'
             - '@sylius.zone_matcher'
+            - '@odiseo_sylius_avatax_plugin.provider.enabled_avatax_configuration'
+            - '@odiseo_sylius_avatax_plugin.resolver.order_item_avatax_code'
+            - '@odiseo_sylius_avatax_plugin.resolver.shipping_avatax_code'
 
     sylius.taxation.order_items_based_strategy:
         class: Sylius\Bundle\CoreBundle\Taxation\Strategy\TaxCalculationStrategy
