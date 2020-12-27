@@ -34,6 +34,9 @@ class AvataxConfiguration implements AvataxConfigurationInterface
     /** @var string|null */
     protected $licenseKey;
 
+    /** @var string|null */
+    protected $shippingTaxCode;
+
     /** @var ZoneInterface|null */
     protected $zone;
 
@@ -144,6 +147,22 @@ class AvataxConfiguration implements AvataxConfigurationInterface
     public function setLicenseKey(?string $licenseKey): void
     {
         $this->licenseKey = $licenseKey;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShippingTaxCode(): ?string
+    {
+        return $this->shippingTaxCode;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShippingTaxCode(?string $shippingTaxCode): void
+    {
+        $this->shippingTaxCode = $shippingTaxCode;
     }
 
     /**

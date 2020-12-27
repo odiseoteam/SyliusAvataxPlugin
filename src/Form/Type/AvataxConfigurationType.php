@@ -40,11 +40,15 @@ final class AvataxConfigurationType extends AbstractResourceType
             ->add('licenseKey', TextType::class, [
                 'label' => 'odiseo_sylius_avatax_plugin.form.avatax_configuration.license_key',
             ])
+            ->add('shippingTaxCode', TextType::class, [
+                'label' => 'odiseo_sylius_avatax_plugin.form.avatax_configuration.shipping_tax_code',
+                'required' => false,
+            ])
             ->add('enabled', CheckboxType::class, [
                 'label' => 'sylius.ui.enabled',
             ])
             ->add('zone', ZoneChoiceType::class, [
-                'zone_scope' => Scope::TAX
+                'zone_scope' => Scope::TAX,
             ]);
         ;
     }

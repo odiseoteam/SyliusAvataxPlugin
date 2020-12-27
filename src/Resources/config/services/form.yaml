@@ -1,4 +1,9 @@
 services:
+    odiseo_sylius_avatax_plugin.form.extension.type.product:
+        class: Odiseo\SyliusAvataxPlugin\Form\Extension\ProductTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Sylius\Bundle\ProductBundle\Form\Type\ProductType }
+
     odiseo_sylius_avatax_plugin.form.type.avatax_configuration:
         class: Odiseo\SyliusAvataxPlugin\Form\Type\AvataxConfigurationType
         arguments:

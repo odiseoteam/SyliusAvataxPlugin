@@ -75,6 +75,16 @@ interface AvataxConfigurationInterface extends
     public function setLicenseKey(?string $licenseKey): void;
 
     /**
+     * @return string|null
+     */
+    public function getShippingTaxCode(): ?string;
+
+    /**
+     * @param string|null $shippingTaxCode
+     */
+    public function setShippingTaxCode(?string $shippingTaxCode): void;
+
+    /**
      * @return ZoneInterface|null
      */
     public function getZone(): ?ZoneInterface;

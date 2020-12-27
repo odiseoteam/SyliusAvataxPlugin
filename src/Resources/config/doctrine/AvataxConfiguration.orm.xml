@@ -17,6 +17,7 @@
         <field name="sandbox" type="boolean"/>
         <field name="accountId" type="string" column="account_id"/>
         <field name="licenseKey" type="string" column="license_key"/>
+        <field name="shippingTaxCode" type="string" column="shipping_tax_code" nullable="true"/>
         <field name="enabled" type="boolean"/>
         <field name="createdAt" type="datetime" column="created_at">
             <gedmo:timestampable on="create"/>

@@ -10,6 +10,8 @@ odiseo_sylius_avatax_plugin:
         admin:
             avatax: Avatax
     form:
+        product:
+            avatax_code: Código de Avatax
         avatax_configuration:
             app_name: Nombre de APP
             app_version: Versión de APP
@@ -17,3 +19,4 @@ odiseo_sylius_avatax_plugin:
             sandbox: Sandbox
             account_id: ID de cuenta
             license_key: Llave de licencia
+            shipping_tax_code: Código de impuestos de envío
