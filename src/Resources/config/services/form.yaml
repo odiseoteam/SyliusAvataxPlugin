@@ -11,3 +11,11 @@ services:
             - ['odiseo']
         tags:
             - { name: form.type, alias: odiseo_sylius_avatax_configuration }
+
+    odiseo_sylius_avatax_plugin.form.type.avatax_configuration_sender_data:
+        class: Odiseo\SyliusAvataxPlugin\Form\Type\AvataxConfigurationSenderDataType
+        arguments:
+            - '%odiseo_sylius_avatax_plugin.model.avatax_configuration_sender_data.class%'
+            - ['odiseo']
+        tags:
+            - { name: form.type, alias: odiseo_sylius_avatax_configuration_sender_data }

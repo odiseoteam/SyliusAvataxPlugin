@@ -9,3 +9,12 @@ sylius_resource:
                 repository: Odiseo\SyliusAvataxPlugin\Repository\AvataxConfigurationRepository
                 controller: Sylius\Bundle\ResourceBundle\Controller\ResourceController
                 factory: Sylius\Component\Resource\Factory\Factory
+        odiseo_sylius_avatax_plugin.avatax_configuration_sender_data:
+            driver: doctrine/orm
+            classes:
+                model: Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationSenderData
+                interface: Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationSenderDataInterface
+                form: Odiseo\SyliusAvataxPlugin\Form\Type\AvataxConfigurationSenderDataType
+                repository: Odiseo\SyliusAvataxPlugin\Repository\AvataxConfigurationSenderDataRepository
+                controller: Sylius\Bundle\ResourceBundle\Controller\ResourceController
+                factory: Sylius\Component\Resource\Factory\Factory

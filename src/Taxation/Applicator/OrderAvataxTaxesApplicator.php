@@ -7,22 +7,22 @@ namespace Odiseo\SyliusAvataxPlugin\Taxation\Applicator;
 use Avalara\DocumentType;
 use Avalara\TransactionAddressType;
 use Avalara\TransactionBuilder;
+use Avalara\TransactionModel;
 use Odiseo\SyliusAvataxPlugin\Api\AvataxClient;
+use Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationSenderDataInterface;
 use Odiseo\SyliusAvataxPlugin\Provider\EnabledAvataxConfigurationProviderInterface;
 use Odiseo\SyliusAvataxPlugin\Resolver\OrderItemAvataxCodeResolverInterface;
 use Odiseo\SyliusAvataxPlugin\Resolver\ShippingAvataxCodeResolverInterface;
 use Sylius\Component\Addressing\Matcher\ZoneMatcherInterface;
 use Sylius\Component\Addressing\Model\ZoneInterface;
 use Sylius\Component\Core\Model\AdjustmentInterface;
-use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
-use Sylius\Component\Core\Model\OrderItemUnitInterface;
 use Sylius\Component\Core\Model\Scope;
-use Sylius\Component\Core\Model\ShopBillingDataInterface;
 use Sylius\Component\Core\Provider\ZoneProviderInterface;
 use Sylius\Component\Core\Taxation\Applicator\OrderTaxesApplicatorInterface;
 use Sylius\Component\Order\Factory\AdjustmentFactoryInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
 {
@@ -74,7 +74,11 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
             return;
         }
 
+        /** @var TransactionModel|string $taxes */
         $taxes = $this->createAvataxTb($order)->create();
+        if (!isset($taxes->lines)) {
+            throw new BadRequestHttpException($taxes);
+        }
 
         foreach ($taxes->lines as $line) {
             if ('shipping' === $line->itemCode) {
@@ -101,20 +105,6 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
                 }
             }
         }
-    }
-
-    /**
-     * @param OrderItemUnitInterface $unit
-     * @param int $taxAmount
-     * @param string $label
-     * @param bool $included
-     */
-    private function addAdjustment(OrderItemUnitInterface $unit, int $taxAmount, string $label, bool $included): void
-    {
-        $unitTaxAdjustment = $this->adjustmentFactory
-            ->createWithData(AdjustmentInterface::TAX_ADJUSTMENT, $label, $taxAmount, $included)
-        ;
-        $unit->addAdjustment($unitTaxAdjustment);
     }
 
     /**
@@ -147,18 +137,15 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         $tb = new TransactionBuilder($this->avataxClient, "DEFAULT", DocumentType::C_SALESINVOICE, $customerCode);
         $tb->withCurrencyCode($order->getCurrencyCode());
 
-        // From Address
-        /** @var ChannelInterface $channel */
-        $channel = $order->getChannel();
-        $channelData = $channel->getShopBillingData();
+        $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
+        $senderData = $avataxConfiguration->getSenderData();
 
-        if ($channelData && $this->isValidAddress($channelData)) {
-            $tb->withAddress(TransactionAddressType::C_SHIPFROM, $channelData->getStreet(), null, null,
-                $channelData->getCity(), $channelData->getTaxId(), $channelData->getPostcode(), $channelData->getCountryCode()
+        if ($senderData && $this->isValidAddress($senderData)) {
+            $tb->withAddress(TransactionAddressType::C_SHIPFROM, $senderData->getStreet(), null, null,
+                $senderData->getCity(), $senderData->getProvinceCode(), $senderData->getPostcode(), $senderData->getCountryCode()
             );
         }
 
-        // To Address
         $shippingAddress = $order->getShippingAddress();
 
         $provinceCode = $shippingAddress->getProvinceName();
@@ -201,9 +188,13 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         return true;
     }
 
-    private function isValidAddress(ShopBillingDataInterface $address): bool
+    /**
+     * @param AvataxConfigurationSenderDataInterface $senderData
+     * @return bool
+     */
+    private function isValidAddress(AvataxConfigurationSenderDataInterface $senderData): bool
     {
-        return null !== $address->getStreet() && null !== $address->getCity() && null !== $address->getTaxId() &&
-            null !== $address->getPostcode() && null !== $address->getCountryCode();
+        return null !== $senderData->getStreet() && null !== $senderData->getCity() && null !== $senderData->getProvinceCode() &&
+            null !== $senderData->getPostcode() && null !== $senderData->getCountryCode();
     }
 }

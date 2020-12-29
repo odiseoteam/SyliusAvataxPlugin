@@ -93,4 +93,14 @@ interface AvataxConfigurationInterface extends
      * @param ZoneInterface|null $zone
      */
     public function setZone(?ZoneInterface $zone): void;
+
+    /**
+     * @return AvataxConfigurationSenderDataInterface|null
+     */
+    public function getSenderData(): ?AvataxConfigurationSenderDataInterface;
+
+    /**
+     * @param AvataxConfigurationSenderDataInterface|null $senderData
+     */
+    public function setSenderData(?AvataxConfigurationSenderDataInterface $senderData): void;
 }

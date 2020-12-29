@@ -29,5 +29,12 @@
         <many-to-one field="zone" target-entity="Sylius\Component\Addressing\Model\ZoneInterface">
             <join-column name="zone_id" referenced-column-name="id" nullable="false"/>
         </many-to-one>
+
+        <one-to-one field="senderData" target-entity="Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationSenderDataInterface">
+            <join-column name="sender_data_id" on-delete="CASCADE"/>
+            <cascade>
+                <cascade-all />
+            </cascade>
+        </one-to-one>
     </mapped-superclass>
 </doctrine-mapping>

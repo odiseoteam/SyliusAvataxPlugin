@@ -20,3 +20,10 @@ odiseo_sylius_avatax_plugin:
             account_id: Account ID
             license_key: License key
             shipping_tax_code: Shipping tax code
+            sender_data: Sender data
+        avatax_configuration_sender_data:
+            country: Country
+            province_code: Province code
+            street: Street
+            city: City
+            postcode: Postcode

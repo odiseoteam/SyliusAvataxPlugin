@@ -40,6 +40,9 @@ class AvataxConfiguration implements AvataxConfigurationInterface
     /** @var ZoneInterface|null */
     protected $zone;
 
+    /** @var AvataxConfigurationSenderDataInterface|null */
+    protected $senderData;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -179,5 +182,21 @@ class AvataxConfiguration implements AvataxConfigurationInterface
     public function setZone(?ZoneInterface $zone): void
     {
         $this->zone = $zone;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSenderData(): ?AvataxConfigurationSenderDataInterface
+    {
+        return $this->senderData;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSenderData(?AvataxConfigurationSenderDataInterface $senderData): void
+    {
+        $this->senderData = $senderData;
     }
 }

@@ -49,7 +49,10 @@ final class AvataxConfigurationType extends AbstractResourceType
             ])
             ->add('zone', ZoneChoiceType::class, [
                 'zone_scope' => Scope::TAX,
-            ]);
+            ])
+            ->add('senderData', AvataxConfigurationSenderDataType::class, [
+                'label' => 'odiseo_sylius_avatax_plugin.form.avatax_configuration.sender_data',
+            ])
         ;
     }
 
