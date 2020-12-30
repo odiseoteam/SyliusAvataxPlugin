@@ -24,14 +24,11 @@
 ## Description
 
 This is a Sylius Plugin that adds Avatax taxes calculator to your store.
-[AvaTax demo](https://developer.avalara.com/avatax/avatax-demo).
-[Understanding AvaTax sandbox accounts](https://help.avalara.com/Avalara_AvaTax_Update/Understanding_AvaTax_sandbox_accounts).
+
+[AvaTax demo](https://developer.avalara.com/avatax/avatax-demo)  
+[Understanding AvaTax sandbox accounts](https://help.avalara.com/Avalara_AvaTax_Update/Understanding_AvaTax_sandbox_accounts)
 
 Support Sylius version 1.6+.
-
-## Screenshots
-
-<img src="https://github.com/odiseoteam/SyliusAvataxPlugin/blob/master/screenshot_1.png" alt="Taxes" width="650">
 
 ## Demo
 
@@ -43,6 +40,7 @@ You can see this plugin in action in our Sylius Demo application.
 ## Documentation
 
 - [Installation](doc/installation.md)
+- [Onboarding](doc/onboarding.md)
 - [Tests](doc/tests.md)
 
 ## Credits
