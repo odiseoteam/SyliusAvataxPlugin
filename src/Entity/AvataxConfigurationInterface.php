@@ -55,14 +55,14 @@ interface AvataxConfigurationInterface extends
     public function setSandbox(?bool $sandbox): void;
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getAccountId(): ?string;
+    public function getAccountId(): ?int;
 
     /**
-     * @param string|null $accountId
+     * @param int|null $accountId
      */
-    public function setAccountId(?string $accountId): void;
+    public function setAccountId(?int $accountId): void;
 
     /**
      * @return string|null

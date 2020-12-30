@@ -18,15 +18,15 @@ class AvataxClient extends BaseAvataxClient
 
         $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
 
-        $appName = $avataxConfiguration->getAppName();
-        $appVersion = $avataxConfiguration->getAppVersion();
-        $machineName = $avataxConfiguration->getMachineName();
-        $environment = $avataxConfiguration->isSandbox() ? 'sandbox' : 'production';
+        $appName = (string) $avataxConfiguration->getAppName();
+        $appVersion = (string) $avataxConfiguration->getAppVersion();
+        $machineName = (string) $avataxConfiguration->getMachineName();
+        $environment = $avataxConfiguration->isSandbox() === true ? 'sandbox' : 'production';
 
         parent::__construct($appName, $appVersion, $machineName, $environment);
 
-        $accountId = $avataxConfiguration->getAccountId();
-        $licenseKey = $avataxConfiguration->getLicenseKey();
+        $accountId = (int) $avataxConfiguration->getAccountId();
+        $licenseKey = (string) $avataxConfiguration->getLicenseKey();
 
         $this->withLicenseKey($accountId, $licenseKey);
     }

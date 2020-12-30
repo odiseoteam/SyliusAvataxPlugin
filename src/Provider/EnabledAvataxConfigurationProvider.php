@@ -25,7 +25,7 @@ final class EnabledAvataxConfigurationProvider implements EnabledAvataxConfigura
     {
         $configuration = $this->avataxConfigurationRepository->findOneByEnabled();
         if (!$configuration instanceof AvataxConfigurationInterface) {
-            throw new NotFoundHttpException(sprintf('The "%s" has not been found', get_class($configuration)));
+            throw new NotFoundHttpException(sprintf('The "%s" has not been found', AvataxConfigurationInterface::class));
         }
 
         return $configuration;

@@ -7,7 +7,6 @@ namespace Odiseo\SyliusAvataxPlugin\Taxation\Applicator;
 use Avalara\DocumentType;
 use Avalara\TransactionAddressType;
 use Avalara\TransactionBuilder;
-use Avalara\TransactionModel;
 use Odiseo\SyliusAvataxPlugin\Api\AvataxClient;
 use Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationSenderDataInterface;
 use Odiseo\SyliusAvataxPlugin\Provider\EnabledAvataxConfigurationProviderInterface;
@@ -15,9 +14,11 @@ use Odiseo\SyliusAvataxPlugin\Resolver\OrderItemAvataxCodeResolverInterface;
 use Odiseo\SyliusAvataxPlugin\Resolver\ShippingAvataxCodeResolverInterface;
 use Sylius\Component\Addressing\Matcher\ZoneMatcherInterface;
 use Sylius\Component\Addressing\Model\ZoneInterface;
+use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\AdjustmentInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\Scope;
 use Sylius\Component\Core\Provider\ZoneProviderInterface;
 use Sylius\Component\Core\Taxation\Applicator\OrderTaxesApplicatorInterface;
@@ -74,10 +75,12 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
             return;
         }
 
-        /** @var TransactionModel|string $taxes */
-        $taxes = $this->createAvataxTb($order)->create();
+        $taxes = $this->createAvataxTransactionBuilder($order)->create();
         if (!isset($taxes->lines)) {
-            throw new BadRequestHttpException($taxes);
+            /** @var string $message */
+            $message = $taxes;
+
+            throw new BadRequestHttpException($message);
         }
 
         foreach ($taxes->lines as $line) {
@@ -88,8 +91,11 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
                 ;
                 $order->addAdjustment($shippingTaxAdjustment);
             } else {
-                $matchItems = $order->getItems()->filter(function (OrderItemInterface $item) use ($line) {
-                    return $line->itemCode === $item->getVariant()->getCode();
+                $matchItems = $order->getItems()->filter(function (OrderItemInterface $item) use ($line): bool {
+                    /** @var ProductVariantInterface $variant */
+                    $variant = $item->getVariant();
+
+                    return $line->itemCode === $variant->getCode();
                 });
 
                 if (count($matchItems) > 0) {
@@ -111,54 +117,90 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
      * @param OrderInterface $order
      * @return TransactionBuilder
      */
-    private function createAvataxTb(OrderInterface $order): TransactionBuilder
+    private function createAvataxTransactionBuilder(OrderInterface $order): TransactionBuilder
     {
-        $tb = $this->createAvataxBaseTb($order);
+        $transactionBuilder = $this->createAvataxBaseTransactionBuilder($order);
 
         foreach ($order->getItems() as $item) {
             $quantity = $item->getQuantity();
+            /** @var ProductVariantInterface $variant */
             $variant = $item->getVariant();
 
-            $tb->withLine($item->getTotal()/100, $quantity, $variant->getCode(), $this->orderItemAvataxCodeResolver->getTaxCode($item));
+            $transactionBuilder->withLine(
+                $item->getTotal() / 100,
+                $quantity,
+                (string) $variant->getCode(),
+                $this->orderItemAvataxCodeResolver->getTaxCode($item)
+            );
         }
 
-        $tb->withLine($order->getShippingTotal()/100, 1, 'shipping', $this->shippingAvataxCodeResolver->getTaxCode($this->enabledAvataxConfigurationProvider->getConfiguration()));
+        $transactionBuilder->withLine(
+            $order->getShippingTotal() / 100,
+            1,
+            'shipping',
+            $this->shippingAvataxCodeResolver->getTaxCode(
+                $this->enabledAvataxConfigurationProvider->getConfiguration()
+            )
+        );
 
-        return $tb;
+        return $transactionBuilder;
     }
 
     /**
      * @param OrderInterface $order
      * @return TransactionBuilder
      */
-    private function createAvataxBaseTb(OrderInterface $order): TransactionBuilder
+    private function createAvataxBaseTransactionBuilder(OrderInterface $order): TransactionBuilder
     {
-        $customerCode = $order->getCustomer()?$order->getCustomer()->getEmail():'DEFAULT_CUSTOMER_CODE';
-        $tb = new TransactionBuilder($this->avataxClient, "DEFAULT", DocumentType::C_SALESINVOICE, $customerCode);
-        $tb->withCurrencyCode($order->getCurrencyCode());
+        $customer = $order->getCustomer();
+
+        $customerCode = $customer !== null ? $customer->getEmail() : 'DEFAULT_CUSTOMER_CODE';
+
+        $transactionBuilder = new TransactionBuilder(
+            $this->avataxClient,
+            'DEFAULT',
+            (string) DocumentType::C_SALESINVOICE,
+            (string) $customerCode
+        );
+
+        $transactionBuilder->withCurrencyCode((string) $order->getCurrencyCode());
 
         $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
         $senderData = $avataxConfiguration->getSenderData();
 
-        if ($senderData && $this->isValidAddress($senderData)) {
-            $tb->withAddress(TransactionAddressType::C_SHIPFROM, $senderData->getStreet(), null, null,
-                $senderData->getCity(), $senderData->getProvinceCode(), $senderData->getPostcode(), $senderData->getCountryCode()
+        if ($senderData !== null && $this->isValidAddress($senderData)) {
+            $transactionBuilder->withAddress(
+                TransactionAddressType::C_SHIPFROM,
+                $senderData->getStreet(),
+                null,
+                null,
+                $senderData->getCity(),
+                $senderData->getProvinceCode(),
+                $senderData->getPostcode(),
+                $senderData->getCountryCode()
             );
         }
 
+        /** @var AddressInterface $shippingAddress */
         $shippingAddress = $order->getShippingAddress();
 
         $provinceCode = $shippingAddress->getProvinceName();
-        if ('US' === $shippingAddress->getCountryCode()) {
-            $provinceCode = substr($shippingAddress->getProvinceCode(), 3, 2);
+        if ($provinceCode === null) {
+            $provinceCode = substr((string) $shippingAddress->getProvinceCode(), 3, 2);
         }
 
-        $tb->withAddress(TransactionAddressType::C_SHIPTO, $shippingAddress->getStreet(), null, null,
-            $shippingAddress->getCity(), $provinceCode, $shippingAddress->getPostcode(),
+        $transactionBuilder->withAddress(
+            TransactionAddressType::C_SHIPTO,
+            $shippingAddress->getStreet(),
+            null,
+            null,
+            $shippingAddress->getCity(),
+            $provinceCode,
+            $shippingAddress->getPostcode(),
             $shippingAddress->getCountryCode()
         );
 
-        return $tb;
+        return $transactionBuilder;
     }
 
     /**
@@ -176,12 +218,12 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
             $zones[] = $this->defaultTaxZoneProvider->getZone($order);
         }
 
-        if (empty($zones)) {
+        if (count($zones) === 0) {
             return false;
         }
 
         $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
-        if (!in_array($avataxConfiguration->getZone(), $zones)) {
+        if (!in_array($avataxConfiguration->getZone(), $zones, true)) {
             return false;
         }
 

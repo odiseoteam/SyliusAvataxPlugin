@@ -6,6 +6,7 @@ namespace Odiseo\SyliusAvataxPlugin\Resolver;
 
 use Odiseo\SyliusAvataxPlugin\Entity\AvataxAwareInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class OrderItemAvataxCodeResolver implements OrderItemAvataxCodeResolverInterface
 {
@@ -14,10 +15,11 @@ final class OrderItemAvataxCodeResolver implements OrderItemAvataxCodeResolverIn
      */
     public function getTaxCode(OrderItemInterface $item): string
     {
+        /** @var ProductVariantInterface $variant */
         $variant = $item->getVariant();
         /** @var AvataxAwareInterface $product */
         $product = $variant->getProduct();
 
-        return $product->getAvataxCode() ?: 'P0000000';
+        return $product->getAvataxCode() !== null ? $product->getAvataxCode() : 'P0000000';
     }
 }

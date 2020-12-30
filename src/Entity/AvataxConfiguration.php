@@ -28,7 +28,7 @@ class AvataxConfiguration implements AvataxConfigurationInterface
     /** @var bool|null */
     protected $sandbox = true;
 
-    /** @var string|null */
+    /** @var int|null */
     protected $accountId;
 
     /** @var string|null */
@@ -123,7 +123,7 @@ class AvataxConfiguration implements AvataxConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getAccountId(): ?string
+    public function getAccountId(): ?int
     {
         return $this->accountId;
     }
@@ -131,7 +131,7 @@ class AvataxConfiguration implements AvataxConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function setAccountId(?string $accountId): void
+    public function setAccountId(?int $accountId): void
     {
         $this->accountId = $accountId;
     }

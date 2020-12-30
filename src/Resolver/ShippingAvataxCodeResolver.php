@@ -13,6 +13,6 @@ final class ShippingAvataxCodeResolver implements ShippingAvataxCodeResolverInte
      */
     public function getTaxCode(AvataxConfigurationInterface $configuration): string
     {
-        return $configuration->getShippingTaxCode() ?: 'FR010000';
+        return $configuration->getShippingTaxCode() !== null ? $configuration->getShippingTaxCode() : 'FR010000';
     }
 }
