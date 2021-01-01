@@ -45,6 +45,7 @@ You can see this plugin in action in our Sylius Demo application.
 
 - [Installation](doc/installation.md)
 - [Onboarding](doc/onboarding.md)
+- [Tax codes](doc/tax-codes.md)
 - [Tests](doc/tests.md)
 
 ## Credits

@@ -28,3 +28,9 @@ Remember, that in the following steps we help you to use the sandbox mode - so y
    Please ensure, to configure the zone where the taxes will be applied.
 
 If everything is ok, you are able to use an Avatax integration 🎉
+
+### Avatax codes
+
+This plugin uses Avatax codes by default for products and shipping, but you can configure it.
+
+1. Find the codes that best suit your Store in the [Tax Codes Search](https://taxcode.avatax.avalara.com/):
