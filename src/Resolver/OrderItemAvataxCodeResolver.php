@@ -20,6 +20,12 @@ final class OrderItemAvataxCodeResolver implements OrderItemAvataxCodeResolverIn
         /** @var AvataxAwareInterface $product */
         $product = $variant->getProduct();
 
-        return $product->getAvataxCode() !== null ? $product->getAvataxCode() : 'P0000000';
+        $taxCode = 'P0000000';
+        if ($product->getAvataxCode() !== null) {
+            /** @var string $taxCode */
+            $taxCode = $product->getAvataxCode();
+        }
+
+        return $taxCode;
     }
 }
