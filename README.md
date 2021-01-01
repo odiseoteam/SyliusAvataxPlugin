@@ -3,6 +3,10 @@
         <img src="https://github.com/odiseoteam/SyliusAvataxPlugin/blob/master/sylius-avatax-plugin.png" alt="Sylius Avatax Plugin" />
     </a>
     <br />
+    <a href="https://www.avalara.com/us/en/products/sales-and-use-tax/avatax.html" target="_blank" title="Avatax">
+        <img src="https://github.com/odiseoteam/SyliusAvataxPlugin/blob/master/avatax-logo.png" alt="Avatax Logo" />
+    </a>
+    <br />
     <a href="https://packagist.org/packages/odiseoteam/sylius-avatax-plugin" title="License" target="_blank">
         <img src="https://img.shields.io/packagist/l/odiseoteam/sylius-avatax-plugin.svg" />
     </a>
