@@ -1,0 +1,31 @@
+services:
+    odiseo_sylius_avatax_plugin.context.setup.avatax_configuration:
+        class: Tests\Odiseo\SyliusAvataxPlugin\Behat\Context\Setup\AvataxConfigurationContext
+        public: true
+        arguments:
+            - '@sylius.behat.shared_storage'
+            - '@odiseo_sylius_avatax_plugin.factory.avatax_configuration'
+            - '@odiseo_sylius_avatax_plugin.repository.avatax_configuration'
+            - '@sylius.repository.zone'
+            - '@odiseo_sylius_avatax_plugin.manager.avatax_configuration'
+        tags:
+            - { name: fob.context_service }
+
+    odiseo_sylius_avatax_plugin.context.transform.avatax_configuration:
+        class: Tests\Odiseo\SyliusAvataxPlugin\Behat\Context\Transform\AvataxConfigurationContext
+        public: true
+        arguments:
+            - '@odiseo_sylius_avatax_plugin.repository.avatax_configuration'
+        tags:
+            - { name: fob.context_service }
+
+    odiseo_sylius_avatax_plugin.context.ui.admin.managing_avatax_configurations:
+        class: Tests\Odiseo\SyliusAvataxPlugin\Behat\Context\Ui\Admin\ManagingAvataxConfigurationsContext
+        public: true
+        arguments:
+            - "@sylius.behat.current_page_resolver"
+            - "@sylius.behat.notification_checker"
+            - '@odiseo_sylius_avatax_plugin.page.admin.avatax_configuration.index_page'
+            - '@odiseo_sylius_avatax_plugin.page.admin.avatax_configuration.create_page'
+        tags:
+            - { name: fob.context_service }

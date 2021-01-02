@@ -1,0 +1,14 @@
+services:
+    odiseo_sylius_avatax_plugin.page.admin.avatax_configuration.index_page:
+        class: Tests\Odiseo\SyliusAvataxPlugin\Behat\Page\Admin\AvataxConfiguration\IndexPage
+        parent: sylius.behat.page.admin.crud.index
+        public: false
+        arguments:
+            - 'odiseo_sylius_avatax_plugin_admin_avatax_configuration_index'
+
+    odiseo_sylius_avatax_plugin.page.admin.avatax_configuration.create_page:
+        class: Tests\Odiseo\SyliusAvataxPlugin\Behat\Page\Admin\AvataxConfiguration\CreatePage
+        parent: sylius.behat.page.admin.crud.create
+        public: false
+        arguments:
+            - 'odiseo_sylius_avatax_plugin_admin_avatax_configuration_create'
