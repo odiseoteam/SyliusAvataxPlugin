@@ -1,8 +1,4 @@
 <p align="center">
-    <a href="https://odiseo.com.ar/" target="_blank" title="Odiseo">
-        <img src="https://github.com/odiseoteam/SyliusAvataxPlugin/blob/master/sylius-avatax-plugin.png" alt="Sylius Avatax Plugin" />
-    </a>
-    <br />
     <a href="https://www.avalara.com/us/en/products/sales-and-use-tax/avatax.html" target="_blank" title="Avatax">
         <img src="https://github.com/odiseoteam/SyliusAvataxPlugin/blob/master/avatax-logo.png" alt="Avatax Logo" width="600px"/>
     </a>
