@@ -2,7 +2,7 @@ odiseo_sylius_avatax_plugin_admin_avatax_configuration:
     resource: |
         alias: odiseo_sylius_avatax_plugin.avatax_configuration
         section: admin
-        templates: SyliusAdminBundle:Crud
+        templates: "@SyliusAdmin\\Crud"
         except: ['show']
         redirect: index
         grid: odiseo_sylius_avatax_plugin_avatax_configuration
