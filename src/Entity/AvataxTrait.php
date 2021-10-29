@@ -6,20 +6,13 @@ namespace Odiseo\SyliusAvataxPlugin\Entity;
 
 trait AvataxTrait
 {
-    /** @var string|null */
-    protected $avataxCode;
+    protected ?string $avataxCode = null;
 
-    /**
-     * @return string|null
-     */
     public function getAvataxCode(): ?string
     {
         return $this->avataxCode;
     }
 
-    /**
-     * @param string|null $avataxCode
-     */
     public function setAvataxCode(?string $avataxCode): void
     {
         $this->avataxCode = $avataxCode;

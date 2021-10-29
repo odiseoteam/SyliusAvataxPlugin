@@ -14,93 +14,39 @@ interface AvataxConfigurationInterface extends
     ToggleableInterface,
     TimestampableInterface
 {
-    /**
-     * @return string|null
-     */
     public function getAppName(): ?string;
 
-    /**
-     * @param string|null $appName
-     */
     public function setAppName(?string $appName): void;
 
-    /**
-     * @return string|null
-     */
     public function getAppVersion(): ?string;
 
-    /**
-     * @param string|null $appVersion
-     */
     public function setAppVersion(?string $appVersion): void;
 
-    /**
-     * @return string|null
-     */
     public function getMachineName(): ?string;
 
-    /**
-     * @param string|null $machineName
-     */
     public function setMachineName(?string $machineName): void;
 
-    /**
-     * @return bool|null
-     */
     public function isSandbox(): ?bool;
 
-    /**
-     * @param bool|null $sandbox
-     */
     public function setSandbox(?bool $sandbox): void;
 
-    /**
-     * @return int|null
-     */
     public function getAccountId(): ?int;
 
-    /**
-     * @param int|null $accountId
-     */
     public function setAccountId(?int $accountId): void;
 
-    /**
-     * @return string|null
-     */
     public function getLicenseKey(): ?string;
 
-    /**
-     * @param string|null $licenseKey
-     */
     public function setLicenseKey(?string $licenseKey): void;
 
-    /**
-     * @return string|null
-     */
     public function getShippingTaxCode(): ?string;
 
-    /**
-     * @param string|null $shippingTaxCode
-     */
     public function setShippingTaxCode(?string $shippingTaxCode): void;
 
-    /**
-     * @return ZoneInterface|null
-     */
     public function getZone(): ?ZoneInterface;
 
-    /**
-     * @param ZoneInterface|null $zone
-     */
     public function setZone(?ZoneInterface $zone): void;
 
-    /**
-     * @return AvataxConfigurationSenderDataInterface|null
-     */
     public function getSenderData(): ?AvataxConfigurationSenderDataInterface;
 
-    /**
-     * @param AvataxConfigurationSenderDataInterface|null $senderData
-     */
     public function setSenderData(?AvataxConfigurationSenderDataInterface $senderData): void;
 }

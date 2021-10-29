@@ -8,9 +8,6 @@ use Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationInterface;
 
 final class ShippingAvataxCodeResolver implements ShippingAvataxCodeResolverInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxCode(AvataxConfigurationInterface $configuration): string
     {
         $taxCode = 'FR010000';

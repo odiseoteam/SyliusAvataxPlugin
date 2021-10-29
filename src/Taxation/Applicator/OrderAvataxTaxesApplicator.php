@@ -27,26 +27,13 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
 {
-    /** @var AvataxClient */
-    private $avataxClient;
-
-    /** @var AdjustmentFactoryInterface */
-    private $adjustmentFactory;
-
-    /** @var ZoneProviderInterface */
-    private $defaultTaxZoneProvider;
-
-    /** @var ZoneMatcherInterface */
-    private $zoneMatcher;
-
-    /** @var EnabledAvataxConfigurationProviderInterface */
-    private $enabledAvataxConfigurationProvider;
-
-    /** @var OrderItemAvataxCodeResolverInterface */
-    private $orderItemAvataxCodeResolver;
-
-    /** @var ShippingAvataxCodeResolverInterface */
-    private $shippingAvataxCodeResolver;
+    private AvataxClient $avataxClient;
+    private AdjustmentFactoryInterface $adjustmentFactory;
+    private ZoneProviderInterface $defaultTaxZoneProvider;
+    private ZoneMatcherInterface $zoneMatcher;
+    private EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider;
+    private OrderItemAvataxCodeResolverInterface $orderItemAvataxCodeResolver;
+    private ShippingAvataxCodeResolverInterface $shippingAvataxCodeResolver;
 
     public function __construct(
         AvataxClient $avaTaxClient,
@@ -66,9 +53,6 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         $this->shippingAvataxCodeResolver = $shippingAvataxCodeResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply(OrderInterface $order, ZoneInterface $zone): void
     {
         if (!$this->matchTaxZone($order)) {
@@ -87,8 +71,14 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
             if ('shipping' === $line->itemCode) {
                 /** @var AdjustmentInterface $shippingTaxAdjustment */
                 $shippingTaxAdjustment = $this->adjustmentFactory
-                    ->createWithData(AdjustmentInterface::TAX_ADJUSTMENT, 'shipping_tax', intval($line->taxCalculated*100), false)
+                    ->createWithData(
+                        AdjustmentInterface::TAX_ADJUSTMENT,
+                        'shipping_tax',
+                        intval($line->taxCalculated * 100),
+                        false
+                    )
                 ;
+
                 $order->addAdjustment($shippingTaxAdjustment);
             } else {
                 $matchItems = $order->getItems()->filter(function (OrderItemInterface $item) use ($line): bool {
@@ -104,7 +94,13 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
 
                     foreach ($matchItem->getUnits() as $unit) {
                         $unitTaxAdjustment = $this->adjustmentFactory
-                            ->createWithData(AdjustmentInterface::TAX_ADJUSTMENT, 'item_tax', intval($line->taxCalculated*100), false);
+                            ->createWithData(
+                                AdjustmentInterface::TAX_ADJUSTMENT,
+                                'item_tax',
+                                intval($line->taxCalculated * 100),
+                                false
+                            )
+                        ;
 
                         $unit->addAdjustment($unitTaxAdjustment);
                     }
@@ -113,10 +109,6 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     * @return TransactionBuilder
-     */
     private function createAvataxTransactionBuilder(OrderInterface $order): TransactionBuilder
     {
         $transactionBuilder = $this->createAvataxBaseTransactionBuilder($order);
@@ -146,10 +138,6 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         return $transactionBuilder;
     }
 
-    /**
-     * @param OrderInterface $order
-     * @return TransactionBuilder
-     */
     private function createAvataxBaseTransactionBuilder(OrderInterface $order): TransactionBuilder
     {
         $customer = $order->getCustomer();
@@ -203,10 +191,6 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         return $transactionBuilder;
     }
 
-    /**
-     * @param OrderInterface $order
-     * @return bool
-     */
     private function matchTaxZone(OrderInterface $order): bool
     {
         $billingAddress = $order->getBillingAddress();
@@ -230,13 +214,13 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         return true;
     }
 
-    /**
-     * @param AvataxConfigurationSenderDataInterface $senderData
-     * @return bool
-     */
     private function isValidAddress(AvataxConfigurationSenderDataInterface $senderData): bool
     {
-        return null !== $senderData->getStreet() && null !== $senderData->getCity() && null !== $senderData->getProvinceCode() &&
-            null !== $senderData->getPostcode() && null !== $senderData->getCountryCode();
+        return null !== $senderData->getStreet() &&
+            null !== $senderData->getCity() &&
+            null !== $senderData->getProvinceCode() &&
+            null !== $senderData->getPostcode() &&
+            null !== $senderData->getCountryCode()
+        ;
     }
 }

@@ -13,9 +13,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class AvataxConfigurationType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
@@ -56,9 +53,6 @@ final class AvataxConfigurationType extends AbstractResourceType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'odiseo_avatax_configuration';

@@ -10,9 +10,6 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class OrderItemAvataxCodeResolver implements OrderItemAvataxCodeResolverInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxCode(OrderItemInterface $item): string
     {
         /** @var ProductVariantInterface $variant */

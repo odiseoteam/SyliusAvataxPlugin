@@ -8,9 +8,5 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 
 interface OrderItemAvataxCodeResolverInterface
 {
-    /**
-     * @param OrderItemInterface $item
-     * @return string
-     */
     public function getTaxCode(OrderItemInterface $item): string;
 }

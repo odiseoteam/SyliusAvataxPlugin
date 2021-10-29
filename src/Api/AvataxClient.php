@@ -9,8 +9,7 @@ use Odiseo\SyliusAvataxPlugin\Provider\EnabledAvataxConfigurationProviderInterfa
 
 class AvataxClient extends BaseAvataxClient
 {
-    /** @var EnabledAvataxConfigurationProviderInterface */
-    private $enabledAvataxConfigurationProvider;
+    private EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider;
 
     public function __construct(EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider)
     {

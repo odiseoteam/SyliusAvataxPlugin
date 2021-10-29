@@ -1,9 +1,0 @@
-odiseo_sylius_avatax_plugin_api_admin_avatax_configuration:
-    resource: |
-        identifier: appName
-        alias: odiseo_sylius_avatax_plugin.avatax_configuration
-        section: admin_api
-        serialization_version: $version
-        criteria:
-            appName: $appName
-    type: sylius.resource_api

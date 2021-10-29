@@ -9,8 +9,5 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 interface AvataxConfigurationRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @return AvataxConfigurationInterface|null
-     */
     public function findOneByEnabled(): ?AvataxConfigurationInterface;
 }

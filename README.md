@@ -13,14 +13,20 @@
     <a href="https://packagist.org/packages/odiseoteam/sylius-avatax-plugin" title="Version" target="_blank">
         <img src="https://img.shields.io/packagist/v/odiseoteam/sylius-avatax-plugin.svg" />
     </a>
-    <a href="http://travis-ci.org/odiseoteam/SyliusAvataxPlugin" title="Build status" target="_blank">
-        <img src="https://img.shields.io/travis/odiseoteam/SyliusAvataxPlugin/master.svg" />
+    <a href="https://github.com/odiseoteam/SyliusAvataxPlugin/actions" title="Build Status" target="_blank">
+        <img src="https://img.shields.io/github/workflow/status/odiseoteam/SyliusAvataxPlugin/Build" />
     </a>
     <a href="https://scrutinizer-ci.com/g/odiseoteam/SyliusAvataxPlugin/" title="Scrutinizer" target="_blank">
         <img src="https://img.shields.io/scrutinizer/g/odiseoteam/SyliusAvataxPlugin.svg" />
     </a>
     <a href="https://packagist.org/packages/odiseoteam/sylius-avatax-plugin" title="Total Downloads" target="_blank">
         <img src="https://poser.pugx.org/odiseoteam/sylius-avatax-plugin/downloads" />
+    </a>
+    <a href="https://sylius-devs.slack.com" title="Slack" target="_blank">
+        <img src="https://img.shields.io/badge/community%20chat-slack-FF1493.svg" />
+    </a>
+    <a href="https://odiseo.io/contact?utm_source=github&utm_medium=referral&utm_campaign=plugins_vendor" title="Support" target="_blank">
+        <img src="https://img.shields.io/badge/support-contact%20author-blue" />
     </a>
 </p>
 <p align="center"><a href="https://sylius.com/partners/odiseo/" target="_blank"><img src="https://github.com/odiseoteam/SyliusAvataxPlugin/blob/master/badge-partner-by-sylius.png" width="140"></a></p>
@@ -32,7 +38,7 @@ This is a Sylius Plugin that adds Avatax taxes calculator to your store.
 [AvaTax demo](https://developer.avalara.com/avatax/avatax-demo)  
 [Understanding AvaTax sandbox accounts](https://help.avalara.com/Avalara_AvaTax_Update/Understanding_AvaTax_sandbox_accounts)
 
-Support Sylius version 1.7+.
+Support Sylius version 1.9+.
 
 ## Demo
 

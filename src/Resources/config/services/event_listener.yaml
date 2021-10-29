@@ -6,8 +6,5 @@ services:
 
     odiseo_sylius_avatax_plugin.event_listener.avatax_aware_listener:
         class: Odiseo\SyliusAvataxPlugin\Mapping\AvataxAwareListener
-        arguments:
-            - '@sylius.resource_registry'
-            - '%sylius.model.product.class%'
         tags:
             - { name: doctrine.event_subscriber, connection: default, priority: 99 }

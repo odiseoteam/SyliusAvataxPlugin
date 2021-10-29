@@ -9,9 +9,6 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
 class AvataxConfigurationRepository extends EntityRepository implements AvataxConfigurationRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByEnabled(): ?AvataxConfigurationInterface
     {
         return $this->createQueryBuilder('o')

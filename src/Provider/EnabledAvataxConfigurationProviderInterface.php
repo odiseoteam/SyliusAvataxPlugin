@@ -8,8 +8,5 @@ use Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationInterface;
 
 interface EnabledAvataxConfigurationProviderInterface
 {
-    /**
-     * @return AvataxConfigurationInterface
-     */
     public function getConfiguration(): AvataxConfigurationInterface;
 }

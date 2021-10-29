@@ -10,27 +10,9 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Odiseo\SyliusAvataxPlugin\Entity\AvataxAwareInterface;
 use Sylius\Component\Product\Model\ProductInterface;
-use Sylius\Component\Resource\Metadata\RegistryInterface;
 
 final class AvataxAwareListener implements EventSubscriber
 {
-    /** @var RegistryInterface */
-    private $resourceMetadataRegistry;
-
-    /** @var string */
-    private $productClass;
-
-    public function __construct(
-        RegistryInterface $resourceMetadataRegistry,
-        string $productClass
-    ) {
-        $this->resourceMetadataRegistry = $resourceMetadataRegistry;
-        $this->productClass = $productClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents(): array
     {
         return [
@@ -38,10 +20,6 @@ final class AvataxAwareListener implements EventSubscriber
         ];
     }
 
-    /**
-     * @param LoadClassMetadataEventArgs $eventArgs
-     * @throws \Doctrine\ORM\Mapping\MappingException
-     */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $classMetadata = $eventArgs->getClassMetadata();
@@ -59,10 +37,6 @@ final class AvataxAwareListener implements EventSubscriber
         }
     }
 
-    /**
-     * @param ClassMetadata $metadata
-     * @throws \Doctrine\ORM\Mapping\MappingException
-     */
     private function mapAvataxAware(ClassMetadata $metadata): void
     {
         if (!$metadata->hasField('avataxCode')) {
