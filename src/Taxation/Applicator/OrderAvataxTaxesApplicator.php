@@ -8,6 +8,7 @@ use Avalara\DocumentType;
 use Avalara\TransactionAddressType;
 use Avalara\TransactionBuilder;
 use Odiseo\SyliusAvataxPlugin\Api\AvataxClient;
+use Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationInterface;
 use Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationSenderDataInterface;
 use Odiseo\SyliusAvataxPlugin\Provider\EnabledAvataxConfigurationProviderInterface;
 use Odiseo\SyliusAvataxPlugin\Resolver\OrderItemAvataxCodeResolverInterface;
@@ -55,11 +56,16 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
 
     public function apply(OrderInterface $order, ZoneInterface $zone): void
     {
-        if (!$this->matchTaxZone($order)) {
+        $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
+        if (!$avataxConfiguration instanceof AvataxConfigurationInterface) {
             return;
         }
 
-        $taxes = $this->createAvataxTransactionBuilder($order)->create();
+        if (!$this->matchTaxZone($order, $avataxConfiguration)) {
+            return;
+        }
+
+        $taxes = $this->createAvataxTransactionBuilder($order, $avataxConfiguration)->create();
         if (!isset($taxes->lines)) {
             /** @var string $message */
             $message = $taxes;
@@ -109,9 +115,11 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         }
     }
 
-    private function createAvataxTransactionBuilder(OrderInterface $order): TransactionBuilder
-    {
-        $transactionBuilder = $this->createAvataxBaseTransactionBuilder($order);
+    private function createAvataxTransactionBuilder(
+        OrderInterface $order,
+        AvataxConfigurationInterface $avataxConfiguration
+    ): TransactionBuilder {
+        $transactionBuilder = $this->createAvataxBaseTransactionBuilder($order, $avataxConfiguration);
 
         foreach ($order->getItems() as $item) {
             $quantity = $item->getQuantity();
@@ -130,16 +138,16 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
             $order->getShippingTotal() / 100,
             1,
             'shipping',
-            $this->shippingAvataxCodeResolver->getTaxCode(
-                $this->enabledAvataxConfigurationProvider->getConfiguration()
-            )
+            $this->shippingAvataxCodeResolver->getTaxCode($avataxConfiguration)
         );
 
         return $transactionBuilder;
     }
 
-    private function createAvataxBaseTransactionBuilder(OrderInterface $order): TransactionBuilder
-    {
+    private function createAvataxBaseTransactionBuilder(
+        OrderInterface $order,
+        AvataxConfigurationInterface $avataxConfiguration
+    ): TransactionBuilder {
         $customer = $order->getCustomer();
 
         $customerCode = $customer !== null ? $customer->getEmail() : 'DEFAULT_CUSTOMER_CODE';
@@ -153,7 +161,6 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
 
         $transactionBuilder->withCurrencyCode((string) $order->getCurrencyCode());
 
-        $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
         $senderData = $avataxConfiguration->getSenderData();
 
         if ($senderData !== null && $this->isValidAddress($senderData)) {
@@ -191,7 +198,7 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         return $transactionBuilder;
     }
 
-    private function matchTaxZone(OrderInterface $order): bool
+    private function matchTaxZone(OrderInterface $order, AvataxConfigurationInterface $avataxConfiguration): bool
     {
         $billingAddress = $order->getBillingAddress();
         $zones = [];
@@ -206,7 +213,6 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
             return false;
         }
 
-        $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
         if (!in_array($avataxConfiguration->getZone(), $zones, true)) {
             return false;
         }

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Odiseo\SyliusAvataxPlugin\Api;
 
 use Avalara\AvaTaxClient as BaseAvataxClient;
+use Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationInterface;
 use Odiseo\SyliusAvataxPlugin\Provider\EnabledAvataxConfigurationProviderInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AvataxClient extends BaseAvataxClient
 {
@@ -16,6 +18,11 @@ class AvataxClient extends BaseAvataxClient
         $this->enabledAvataxConfigurationProvider = $enabledAvataxConfigurationProvider;
 
         $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
+        if (!$avataxConfiguration instanceof AvataxConfigurationInterface) {
+            throw new NotFoundHttpException(
+                sprintf('The "%s" has not been found', AvataxConfigurationInterface::class)
+            );
+        }
 
         $appName = (string) $avataxConfiguration->getAppName();
         $appVersion = (string) $avataxConfiguration->getAppVersion();

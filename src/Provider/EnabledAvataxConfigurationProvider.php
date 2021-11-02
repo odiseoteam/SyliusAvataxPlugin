@@ -6,7 +6,6 @@ namespace Odiseo\SyliusAvataxPlugin\Provider;
 
 use Odiseo\SyliusAvataxPlugin\Entity\AvataxConfigurationInterface;
 use Odiseo\SyliusAvataxPlugin\Repository\AvataxConfigurationRepositoryInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class EnabledAvataxConfigurationProvider implements EnabledAvataxConfigurationProviderInterface
 {
@@ -17,15 +16,8 @@ final class EnabledAvataxConfigurationProvider implements EnabledAvataxConfigura
         $this->avataxConfigurationRepository = $avataxConfigurationRepository;
     }
 
-    public function getConfiguration(): AvataxConfigurationInterface
+    public function getConfiguration(): ?AvataxConfigurationInterface
     {
-        $configuration = $this->avataxConfigurationRepository->findOneByEnabled();
-        if (!$configuration instanceof AvataxConfigurationInterface) {
-            throw new NotFoundHttpException(
-                sprintf('The "%s" has not been found', AvataxConfigurationInterface::class)
-            );
-        }
-
-        return $configuration;
+        return $this->avataxConfigurationRepository->findOneByEnabled();
     }
 }
