@@ -23,9 +23,11 @@ final class AvataxAwareListener implements EventSubscriber
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $classMetadata = $eventArgs->getClassMetadata();
-        /** @var \ReflectionClass|null $reflection */
         $reflection = $classMetadata->reflClass;
 
+        /**
+         * @phpstan-ignore-next-line
+         */
         if ($reflection === null || $reflection->isAbstract()) {
             return;
         }
