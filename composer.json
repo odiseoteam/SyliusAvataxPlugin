@@ -84,10 +84,6 @@
         ],
         "post-create-project-cmd": [
             "php bin/create_node_symlink.php"
-        ],
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        }
+        ]
     }
 }
