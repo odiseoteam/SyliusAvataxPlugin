@@ -10,7 +10,7 @@
         <img src="https://img.shields.io/packagist/v/odiseoteam/sylius-avatax-plugin.svg" />
     </a>
     <a href="https://github.com/odiseoteam/SyliusAvataxPlugin/actions" title="Build Status" target="_blank">
-        <img src="https://img.shields.io/github/workflow/status/odiseoteam/SyliusAvataxPlugin/Build" />
+        <img src="https://img.shields.io/github/actions/workflow/status/odiseoteam/SyliusAvataxPlugin/build.yml" />
     </a>
     <a href="https://scrutinizer-ci.com/g/odiseoteam/SyliusAvataxPlugin/" title="Scrutinizer" target="_blank">
         <img src="https://img.shields.io/scrutinizer/g/odiseoteam/SyliusAvataxPlugin.svg" />
@@ -21,7 +21,7 @@
     <a href="https://sylius-devs.slack.com" title="Slack" target="_blank">
         <img src="https://img.shields.io/badge/community%20chat-slack-FF1493.svg" />
     </a>
-    <a href="https://odiseo.io/contact?utm_source=github&utm_medium=referral&utm_campaign=plugins_vendor" title="Support" target="_blank">
+    <a href="https://odiseo.io/contact-us" title="Support" target="_blank">
         <img src="https://img.shields.io/badge/support-contact%20author-blue" />
     </a>
 </p>

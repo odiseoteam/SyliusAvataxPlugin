@@ -14,14 +14,23 @@ class AvataxConfiguration implements AvataxConfigurationInterface
     use ToggleableTrait;
 
     protected ?int $id = null;
+
     protected ?string $appName = null;
+
     protected ?string $appVersion = null;
+
     protected ?string $machineName = null;
+
     protected ?bool $sandbox = true;
+
     protected ?int $accountId = null;
+
     protected ?string $licenseKey = null;
+
     protected ?string $shippingTaxCode = null;
+
     protected ?ZoneInterface $zone = null;
+
     protected ?AvataxConfigurationSenderDataInterface $senderData = null;
 
     public function __construct()

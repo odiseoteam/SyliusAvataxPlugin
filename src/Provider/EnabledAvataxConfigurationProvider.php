@@ -9,11 +9,9 @@ use Odiseo\SyliusAvataxPlugin\Repository\AvataxConfigurationRepositoryInterface;
 
 final class EnabledAvataxConfigurationProvider implements EnabledAvataxConfigurationProviderInterface
 {
-    private AvataxConfigurationRepositoryInterface $avataxConfigurationRepository;
-
-    public function __construct(AvataxConfigurationRepositoryInterface $avataxConfigurationRepository)
-    {
-        $this->avataxConfigurationRepository = $avataxConfigurationRepository;
+    public function __construct(
+        private AvataxConfigurationRepositoryInterface $avataxConfigurationRepository,
+    ) {
     }
 
     public function getConfiguration(): ?AvataxConfigurationInterface

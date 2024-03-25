@@ -19,8 +19,7 @@ return [
 ```yml
 # config/packages/_sylius.yaml
 imports:
-    ...
-
+    # ...
     - { resource: "@OdiseoSyliusAvataxPlugin/Resources/config/config.yaml" }
 ```
 
@@ -33,7 +32,7 @@ odiseo_sylius_avatax_plugin_admin:
     prefix: /admin
 ```
 
-5. Include traits and override the models
+5. Include traits and override the resources
 
 ```php
 <?php
@@ -46,8 +45,8 @@ use Odiseo\SyliusAvataxPlugin\Entity\AvataxTrait;
 use Sylius\Component\Core\Model\Product as BaseProduct;
 
 /**
- * @ORM\Table(name="sylius_product")
  * @ORM\Entity
+ * @ORM\Table(name="sylius_product")
  */
 class Product extends BaseProduct implements AvataxAwareInterface
 {
@@ -61,7 +60,6 @@ class Product extends BaseProduct implements AvataxAwareInterface
 
 ```twig
 {# ... #}
-{{ form_row(form.code) }}
 {{ form_row(form.enabled) }}
 {{ form_row(form.avataxCode) }}
 {# ... #}

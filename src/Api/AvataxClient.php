@@ -11,16 +11,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AvataxClient extends BaseAvataxClient
 {
-    private EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider;
-
-    public function __construct(EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider)
-    {
-        $this->enabledAvataxConfigurationProvider = $enabledAvataxConfigurationProvider;
-
+    public function __construct(
+        private EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider,
+    ) {
         $avataxConfiguration = $this->enabledAvataxConfigurationProvider->getConfiguration();
         if (!$avataxConfiguration instanceof AvataxConfigurationInterface) {
             throw new NotFoundHttpException(
-                sprintf('The "%s" has not been found', AvataxConfigurationInterface::class)
+                sprintf('The "%s" has not been found', AvataxConfigurationInterface::class),
             );
         }
 

@@ -47,7 +47,7 @@ final class AvataxAwareListener implements EventSubscriber
                 'fieldName' => 'avataxCode',
                 'columnName' => 'avatax_code',
                 'type' => 'string',
-                'nullable' => true
+                'nullable' => true,
             ]);
         }
     }

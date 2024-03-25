@@ -7,10 +7,15 @@ namespace Odiseo\SyliusAvataxPlugin\Entity;
 class AvataxConfigurationSenderData implements AvataxConfigurationSenderDataInterface
 {
     protected ?int $id = null;
+
     protected ?string $provinceCode = null;
+
     protected ?string $countryCode = null;
+
     protected ?string $street = null;
+
     protected ?string $city = null;
+
     protected ?string $postcode = null;
 
     public function getId(): ?int

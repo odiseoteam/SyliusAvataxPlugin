@@ -28,30 +28,15 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
 {
-    private AvataxClient $avataxClient;
-    private AdjustmentFactoryInterface $adjustmentFactory;
-    private ZoneProviderInterface $defaultTaxZoneProvider;
-    private ZoneMatcherInterface $zoneMatcher;
-    private EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider;
-    private OrderItemAvataxCodeResolverInterface $orderItemAvataxCodeResolver;
-    private ShippingAvataxCodeResolverInterface $shippingAvataxCodeResolver;
-
     public function __construct(
-        AvataxClient $avaTaxClient,
-        AdjustmentFactoryInterface $adjustmentFactory,
-        ZoneProviderInterface $defaultTaxZoneProvider,
-        ZoneMatcherInterface $zoneMatcher,
-        EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider,
-        OrderItemAvataxCodeResolverInterface $orderItemAvataxCodeResolver,
-        ShippingAvataxCodeResolverInterface $shippingAvataxCodeResolver
+        private AvataxClient $avataxClient,
+        private AdjustmentFactoryInterface $adjustmentFactory,
+        private ZoneProviderInterface $defaultTaxZoneProvider,
+        private ZoneMatcherInterface $zoneMatcher,
+        private EnabledAvataxConfigurationProviderInterface $enabledAvataxConfigurationProvider,
+        private OrderItemAvataxCodeResolverInterface $orderItemAvataxCodeResolver,
+        private ShippingAvataxCodeResolverInterface $shippingAvataxCodeResolver,
     ) {
-        $this->avataxClient = $avaTaxClient;
-        $this->adjustmentFactory = $adjustmentFactory;
-        $this->defaultTaxZoneProvider = $defaultTaxZoneProvider;
-        $this->zoneMatcher = $zoneMatcher;
-        $this->enabledAvataxConfigurationProvider = $enabledAvataxConfigurationProvider;
-        $this->orderItemAvataxCodeResolver = $orderItemAvataxCodeResolver;
-        $this->shippingAvataxCodeResolver = $shippingAvataxCodeResolver;
     }
 
     public function apply(OrderInterface $order, ZoneInterface $zone): void
@@ -66,7 +51,7 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
         }
 
         $taxes = $this->createAvataxTransactionBuilder($order, $avataxConfiguration)->create();
-        if (!isset($taxes->lines)) {
+        if (count($taxes->lines) <= 0) {
             /** @var string $message */
             $message = $taxes;
 
@@ -80,8 +65,8 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
                     ->createWithData(
                         AdjustmentInterface::TAX_ADJUSTMENT,
                         'shipping_tax',
-                        intval($line->taxCalculated * 100),
-                        false
+                        (int) ($line->taxCalculated * 100),
+                        false,
                     )
                 ;
 
@@ -103,8 +88,8 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
                             ->createWithData(
                                 AdjustmentInterface::TAX_ADJUSTMENT,
                                 'item_tax',
-                                intval($line->taxCalculated * 100),
-                                false
+                                (int) ($line->taxCalculated * 100),
+                                false,
                             )
                         ;
 
@@ -117,7 +102,7 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
 
     private function createAvataxTransactionBuilder(
         OrderInterface $order,
-        AvataxConfigurationInterface $avataxConfiguration
+        AvataxConfigurationInterface $avataxConfiguration,
     ): TransactionBuilder {
         $transactionBuilder = $this->createAvataxBaseTransactionBuilder($order, $avataxConfiguration);
 
@@ -130,7 +115,7 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
                 $item->getTotal() / 100,
                 $quantity,
                 (string) $variant->getCode(),
-                $this->orderItemAvataxCodeResolver->getTaxCode($item)
+                $this->orderItemAvataxCodeResolver->getTaxCode($item),
             );
         }
 
@@ -138,7 +123,7 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
             $order->getShippingTotal() / 100,
             1,
             'shipping',
-            $this->shippingAvataxCodeResolver->getTaxCode($avataxConfiguration)
+            $this->shippingAvataxCodeResolver->getTaxCode($avataxConfiguration),
         );
 
         return $transactionBuilder;
@@ -146,7 +131,7 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
 
     private function createAvataxBaseTransactionBuilder(
         OrderInterface $order,
-        AvataxConfigurationInterface $avataxConfiguration
+        AvataxConfigurationInterface $avataxConfiguration,
     ): TransactionBuilder {
         $customer = $order->getCustomer();
 
@@ -156,7 +141,7 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
             $this->avataxClient,
             'DEFAULT',
             (string) DocumentType::C_SALESINVOICE,
-            (string) $customerCode
+            (string) $customerCode,
         );
 
         $transactionBuilder->withCurrencyCode((string) $order->getCurrencyCode());
@@ -172,7 +157,7 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
                 $senderData->getCity(),
                 $senderData->getProvinceCode(),
                 $senderData->getPostcode(),
-                $senderData->getCountryCode()
+                $senderData->getCountryCode(),
             );
         }
 
@@ -192,7 +177,7 @@ final class OrderAvataxTaxesApplicator implements OrderTaxesApplicatorInterface
             $shippingAddress->getCity(),
             $provinceCode,
             $shippingAddress->getPostcode(),
-            $shippingAddress->getCountryCode()
+            $shippingAddress->getCountryCode(),
         );
 
         return $transactionBuilder;

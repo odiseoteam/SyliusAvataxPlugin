@@ -6,7 +6,7 @@ namespace Odiseo\SyliusAvataxPlugin\Repository;
 
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
-class AvataxConfigurationSenderDataRepository extends EntityRepository implements
-    AvataxConfigurationSenderDataRepositoryInterface
+// phpcs:ignore
+class AvataxConfigurationSenderDataRepository extends EntityRepository implements AvataxConfigurationSenderDataRepositoryInterface
 {
 }
